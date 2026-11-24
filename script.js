@@ -13,10 +13,16 @@
   const CONFIG = {
     frameCount: 300,
     framePathPrefix: './male',
-    frameExtension: '.png',
+    frameExtension: '.webp',
     canvasId: '#hero-canvas',
     scrollerId: '#main',
     isMobile: window.innerWidth <= 768,
+    // Senior Performance Strategy:
+    // 1. Initial critical batch: Only wait for first 15 frames to achieve Instant First-Paint (<1s)
+    // 2. High-priority keyframes: Next load every 5th frame for fast scrubbing
+    // 3. Background stream with concurrency control (max 6 active requests) to prevent network choke
+    criticalThreshold: 15,
+    concurrencyLimit: 6,
   };
 
   /**
@@ -92,12 +98,35 @@
   };
 
   /**
+   * Helper: Find best rendered frame (nearest loaded neighbor)
+   * Prevents black frames or flickering while background assets stream in.
+   */
+  const getNearestLoadedImage = (targetIndex) => {
+    if (images[targetIndex] && images[targetIndex].complete && images[targetIndex].naturalWidth > 0) {
+      return images[targetIndex];
+    }
+    // Search backward
+    for (let i = targetIndex - 1; i >= 0; i--) {
+      if (images[i] && images[i].complete && images[i].naturalWidth > 0) {
+        return images[i];
+      }
+    }
+    // Search forward
+    for (let i = targetIndex + 1; i < CONFIG.frameCount; i++) {
+      if (images[i] && images[i].complete && images[i].naturalWidth > 0) {
+        return images[i];
+      }
+    }
+    return null;
+  };
+
+  /**
    * Draw Scaled Frame onto Canvas without Aggressive Zoom/Cropping
    */
   const render = () => {
     if (!canvas || !context) return;
-    const currentImg = images[imageSeq.frame];
-    if (!currentImg || !currentImg.complete) return;
+    const currentImg = getNearestLoadedImage(imageSeq.frame);
+    if (!currentImg) return;
 
     const cw = canvas.width;
     const ch = canvas.height;
@@ -127,39 +156,115 @@
   };
 
   /**
-   * Preloader progress handler
+   * Dismiss Preloader & Reveal Canvas Smoothly
+   */
+  let hasRevealedUI = false;
+  const revealSite = () => {
+    if (hasRevealedUI) return;
+    hasRevealedUI = true;
+
+    if (loaderStatus) loaderStatus.textContent = 'System Ready.';
+    if (progressBar) progressBar.style.width = '100%';
+    if (percentText) percentText.textContent = '100%';
+
+    setTimeout(() => {
+      if (loaderEl) {
+        loaderEl.classList.add('is-loaded');
+      }
+      render();
+      ScrollTrigger.refresh();
+    }, 250);
+  };
+
+  /**
+   * Preloader progress handler with Fast First-Paint Strategy
    */
   const onImageLoad = () => {
     loadedCount++;
-    const progress = Math.floor((loadedCount / CONFIG.frameCount) * 100);
+    
+    // Smooth progress indicator
+    if (!hasRevealedUI) {
+      const initialProgress = Math.min(Math.floor((loadedCount / CONFIG.criticalThreshold) * 100), 100);
+      if (progressBar) progressBar.style.width = `${initialProgress}%`;
+      if (percentText) percentText.textContent = `${initialProgress}%`;
 
-    if (progressBar) progressBar.style.width = `${progress}%`;
-    if (percentText) percentText.textContent = `${progress}%`;
-
-    // Once 100% or sufficient frames are in memory, remove loader screen
-    if (loadedCount >= CONFIG.frameCount) {
-      if (loaderStatus) loaderStatus.textContent = 'System Ready.';
-      setTimeout(() => {
-        if (loaderEl) {
-          loaderEl.classList.add('is-loaded');
-        }
-        render();
-        ScrollTrigger.refresh();
-      }, 350);
+      // Instant First Paint: As soon as the first critical batch (15 frames) is ready, unveil site!
+      if (loadedCount >= CONFIG.criticalThreshold) {
+        revealSite();
+      }
     }
   };
 
   /**
-   * Preload Image Sequence Asset Pipeline
+   * Preload Image Sequence Asset Pipeline with Concurrency Pool & Keyframing
+   * Engineered for instant TTI (Time to Interactive) & 0 network throttling.
    */
   const initAssetPipeline = () => {
+    // 1. Initialize image objects slots
     for (let i = 0; i < CONFIG.frameCount; i++) {
-      const img = new Image();
-      img.onload = onImageLoad;
-      img.onerror = onImageLoad;
-      img.src = getFramePath(i);
-      images.push(img);
+      images[i] = new Image();
     }
+
+    // 2. Prioritized loading order queue:
+    // Priority 1: Critical initial batch (0 to 14) for instant hero paint
+    // Priority 2: Keyframes spaced every 4 frames (scrubbing anchors across the entire page)
+    // Priority 3: Remaining intermediate frames (fills in 60fps micro-steps)
+    const priorityQueue = [];
+    const queuedSet = new Set();
+
+    // Priority 1: First 15 frames
+    for (let i = 0; i < Math.min(CONFIG.criticalThreshold, CONFIG.frameCount); i++) {
+      priorityQueue.push(i);
+      queuedSet.add(i);
+    }
+
+    // Priority 2: Keyframes (every 4th frame)
+    for (let i = 0; i < CONFIG.frameCount; i += 4) {
+      if (!queuedSet.has(i)) {
+        priorityQueue.push(i);
+        queuedSet.add(i);
+      }
+    }
+
+    // Priority 3: All remaining frames
+    for (let i = 0; i < CONFIG.frameCount; i++) {
+      if (!queuedSet.has(i)) {
+        priorityQueue.push(i);
+        queuedSet.add(i);
+      }
+    }
+
+    // 3. Worker Pool with bounded concurrency (avoids HTTP/2 stream exhaustion)
+    let activeWorkers = 0;
+    let queueIndex = 0;
+
+    const pumpQueue = () => {
+      while (activeWorkers < CONFIG.concurrencyLimit && queueIndex < priorityQueue.length) {
+        const frameIndex = priorityQueue[queueIndex++];
+        activeWorkers++;
+
+        const img = images[frameIndex];
+        img.onload = () => {
+          onImageLoad();
+          activeWorkers--;
+          pumpQueue();
+        };
+        img.onerror = () => {
+          onImageLoad();
+          activeWorkers--;
+          pumpQueue();
+        };
+        img.src = getFramePath(frameIndex);
+      }
+    };
+
+    // Kickstart worker pool
+    pumpQueue();
+
+    // Safety fallback: Never keep user stuck behind loader more than 2.5 seconds
+    setTimeout(() => {
+      revealSite();
+    }, 2500);
 
     // Smooth Parallax Fade-Out for Hero Text as user scrolls down
     gsap.to('.hero-content-layer', {
