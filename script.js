@@ -290,23 +290,68 @@
   };
 
   /**
-   * 6. ScrollTrigger Section Reveal Animations
+   * 6. ScrollTrigger Sequential Card Unfold & Stacking Deck Architecture
    */
   const initScrollReveals = () => {
-    const panels = document.querySelectorAll('.glass-panel');
-    panels.forEach((panel) => {
-      gsap.from(panel, {
+    // 1. Section Header Reveals
+    const headers = document.querySelectorAll('.section-header');
+    headers.forEach((header) => {
+      gsap.from(header, {
         opacity: 0,
-        y: 35,
-        duration: 0.8,
+        y: 40,
+        duration: 0.9,
         ease: 'power3.out',
         scrollTrigger: {
-          trigger: panel,
+          trigger: header,
           scroller: CONFIG.scrollerId,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
+          start: 'top 88%',
+          toggleActions: 'play none none reverse',
         },
       });
+    });
+
+    // 2. Sequential Stacking Containers (Projects, Skills, About, Experience)
+    const cardContainers = [
+      '.about-grid',
+      '.timeline-wrapper',
+      '.skills-grid',
+      '.projects-showcase',
+      '.edu-grid',
+      '.contact-cta'
+    ];
+
+    cardContainers.forEach((containerSelector) => {
+      const container = document.querySelector(containerSelector);
+      if (!container) return;
+
+      const cards = container.querySelectorAll('.glass-panel');
+      if (!cards.length) return;
+
+      // Sequential stagger entrance when user enters the section
+      gsap.fromTo(
+        cards,
+        {
+          opacity: 0,
+          y: 70,
+          scale: 0.94,
+          rotateX: 6,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          duration: 0.85,
+          stagger: 0.16,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: container,
+            scroller: CONFIG.scrollerId,
+            start: 'top 82%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
     });
   };
 
