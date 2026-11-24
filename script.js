@@ -256,6 +256,17 @@
       drawer.classList.toggle('is-open', isOpen);
       toggle.classList.toggle('is-active', isOpen);
       toggle.setAttribute('aria-expanded', String(isOpen));
+
+      if (isOpen) {
+        drawer.removeAttribute('inert');
+      } else {
+        // Blur any focused element inside drawer before setting inert to avoid W3C accessibility warning
+        if (drawer.contains(document.activeElement)) {
+          document.activeElement.blur();
+        }
+        drawer.setAttribute('inert', '');
+      }
+
       document.body.style.overflow = isOpen ? 'hidden' : '';
     };
 
