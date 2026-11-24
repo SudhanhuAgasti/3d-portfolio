@@ -55,6 +55,17 @@ html {
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--bg-base);
     color: var(--text-primary);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE / Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 body {
@@ -65,6 +76,8 @@ body {
     overflow-x: hidden;
     position: relative;
     min-height: 100vh;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 /* Accessibility Skip Link */
@@ -735,7 +748,7 @@ body {
                 0 0 35px rgba(0, 255, 170, 0.35), 
                 0 0 10px rgba(0, 255, 170, 0.5),
                 inset 0 0 16px rgba(0, 255, 170, 0.15);
-    transform: translateY(-6px) scale(1.01);
+    transform: translateY(-6px);
 }
 
 .hero-content-layer {

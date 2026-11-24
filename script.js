@@ -314,17 +314,15 @@
     // 2. Sequential Stacking Containers (Projects, Skills, About, Experience)
     // Projects Stack: As each card scrolls up, the one below reveals and stacks over it
     const projectCards = document.querySelectorAll('.projects-showcase .project-card');
-    projectCards.forEach((card, i) => {
+    projectCards.forEach((card) => {
       gsap.fromTo(
         card,
         {
           opacity: 0.8,
-          scale: 0.92 + (i * 0.03),
           y: 60,
         },
         {
           opacity: 1,
-          scale: 1,
           y: 0,
           duration: 0.8,
           ease: 'power3.out',
@@ -352,20 +350,16 @@
       const cards = container.querySelectorAll('.glass-panel');
       if (!cards.length) return;
 
-      // Sequential stagger entrance when user enters the section
+      // Sequential stagger entrance when user enters the section (Clean Y-axis translate only, no zoom/scale)
       gsap.fromTo(
         cards,
         {
           opacity: 0,
-          y: 70,
-          scale: 0.94,
-          rotateX: 6,
+          y: 60,
         },
         {
           opacity: 1,
           y: 0,
-          scale: 1,
-          rotateX: 0,
           duration: 0.85,
           stagger: 0.16,
           ease: 'power3.out',
