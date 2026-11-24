@@ -47,11 +47,11 @@
     const scrollerEl = document.querySelector(CONFIG.scrollerId);
     if (!scrollerEl) return;
 
-    // Initialize Locomotive
+    // Initialize Locomotive with responsive smooth options
     locoScroll = new LocomotiveScroll({
       el: scrollerEl,
       smooth: true,
-      smartphone: { smooth: false },
+      smartphone: { smooth: true },
       tablet: { smooth: true },
       multiplier: 0.95,
     });
@@ -257,33 +257,42 @@
 
     toggle.addEventListener('click', () => toggleDrawer());
 
+    const scrollToSection = (targetId, offset = -70) => {
+      if (!targetId || !targetId.startsWith('#')) return;
+      const targetEl = document.querySelector(targetId);
+      if (!targetEl) return;
+
+      if (locoScroll && typeof locoScroll.scrollTo === 'function') {
+        try {
+          locoScroll.scrollTo(targetEl, { offset: offset, duration: 800 });
+          return;
+        } catch (err) {
+          console.warn('Locomotive scrollTo fallback:', err);
+        }
+      }
+
+      // Fallback native smooth scroll if Locomotive instance is suspended or on mobile
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
     // Auto-close drawer on link click and trigger smooth scroll
     mobileLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
+        e.preventDefault();
         const targetId = link.getAttribute('href');
         toggleDrawer(false);
-
-        if (locoScroll && targetId && targetId.startsWith('#')) {
-          e.preventDefault();
-          const targetEl = document.querySelector(targetId);
-          if (targetEl) {
-            locoScroll.scrollTo(targetEl, { offset: -60, duration: 1000 });
-          }
-        }
+        setTimeout(() => scrollToSection(targetId, -60), 200);
       });
     });
 
     // Desktop nav smooth jump
-    const desktopLinks = document.querySelectorAll('.nav-links a');
+    const desktopLinks = document.querySelectorAll('.nav-links a, .brand-link');
     desktopLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
         const targetId = link.getAttribute('href');
-        if (locoScroll && targetId && targetId.startsWith('#')) {
+        if (targetId && targetId.startsWith('#')) {
           e.preventDefault();
-          const targetEl = document.querySelector(targetId);
-          if (targetEl) {
-            locoScroll.scrollTo(targetEl, { offset: -70, duration: 900 });
-          }
+          scrollToSection(targetId, -70);
         }
       });
     });
