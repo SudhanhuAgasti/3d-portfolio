@@ -3,23 +3,23 @@
    ========================================================================== */
 :root {
     --bg-base: #06070a;
-    --bg-surface: #0c0e14;
-    --bg-surface-elevated: #131722;
-    --bg-glass: rgba(18, 22, 34, 0.65);
-    --bg-glass-hover: rgba(26, 32, 50, 0.8);
+    --bg-surface: rgba(14, 18, 28, 0.45);
+    --bg-surface-elevated: rgba(22, 28, 44, 0.55);
+    --bg-glass: rgba(10, 14, 24, 0.38);
+    --bg-glass-hover: rgba(14, 20, 36, 0.52);
     
-    --border-subtle: rgba(255, 255, 255, 0.07);
-    --border-medium: rgba(255, 255, 255, 0.12);
-    --border-focus: rgba(0, 255, 170, 0.4);
+    --border-subtle: rgba(255, 255, 255, 0.12);
+    --border-medium: rgba(255, 255, 255, 0.22);
+    --border-focus: rgba(0, 255, 170, 0.6);
 
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
     
     --accent: #00ffaa;
-    --accent-glow: rgba(0, 255, 170, 0.22);
-    --accent-secondary: #00b4d8;
-    --accent-gradient: linear-gradient(135deg, #00ffaa 0%, #00b4d8 100%);
+    --accent-glow: rgba(0, 255, 170, 0.4);
+    --accent-secondary: #38bdf8;
+    --accent-gradient: linear-gradient(135deg, #00ffaa 0%, #38bdf8 100%);
     
     --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -485,7 +485,8 @@ body {
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: radial-gradient(circle at center, rgba(6, 7, 10, 0.4) 0%, rgba(6, 7, 10, 0.88) 75%, var(--bg-base) 100%);
+    /* Soft edges so character remains crystal clear while text over borders stays readable */
+    background: radial-gradient(circle at center, transparent 40%, rgba(6, 7, 10, 0.45) 75%, rgba(6, 7, 10, 0.85) 100%);
     pointer-events: none;
 }
 
@@ -510,24 +511,25 @@ body {
     padding: clamp(70px, 10vw, 120px) 0;
     z-index: 20;
     background: transparent;
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Crystal Transparent Glassmorphism Panel */
 .glass-panel {
-    background: rgba(12, 15, 24, 0.78);
-    border: 1px solid var(--border-medium);
+    background: rgba(8, 12, 22, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-lg);
     padding: clamp(24px, 4vw, 36px);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     transition: transform var(--transition-smooth), border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .glass-panel:hover {
-    border-color: rgba(0, 255, 170, 0.35);
-    background: rgba(18, 24, 38, 0.88);
-    box-shadow: 0 25px 50px -12px rgba(0, 255, 170, 0.15);
+    border-color: rgba(0, 255, 170, 0.45);
+    background: rgba(12, 18, 32, 0.55);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 255, 170, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .hero-content-layer {
@@ -591,6 +593,7 @@ body {
     line-height: 1.05;
     letter-spacing: -0.03em;
     margin: 30px 0;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
 }
 
 .hero-headline .line-reveal {
@@ -602,6 +605,7 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 16px rgba(0, 255, 170, 0.4));
 }
 
 .hero-bottom {
@@ -616,6 +620,7 @@ body {
     font-size: clamp(0.9rem, 1.8vw, 1.05rem);
     color: var(--text-secondary);
     line-height: 1.5;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .scroll-cue {
@@ -707,6 +712,7 @@ body {
     line-height: 1.6;
     color: var(--text-primary);
     margin-bottom: 16px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .body-text {
@@ -714,6 +720,7 @@ body {
     color: var(--text-secondary);
     line-height: 1.7;
     margin-bottom: 28px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
 }
 
 .quick-highlights {
@@ -948,11 +955,13 @@ body {
 .tag-cloud li {
     font-size: 0.84rem;
     padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border-subtle);
+    background: rgba(18, 26, 44, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-sm);
-    color: var(--text-secondary);
+    color: var(--text-primary);
+    backdrop-filter: blur(8px);
     transition: all 0.2s ease;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .tag-cloud li:hover {
