@@ -1,58 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 54" fill="none" class="brand-vector-svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" fill="none">
   <defs>
-    <!-- Glass Chrome Gradient -->
-    <linearGradient id="skaGlassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
-      <stop offset="35%" stop-color="#a7f3d0" stop-opacity="0.8"/>
-      <stop offset="70%" stop-color="#00ffaa" stop-opacity="0.75"/>
-      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.9"/>
+    <!-- Vibrant Emerald-to-Cyan Electric Gradient -->
+    <linearGradient id="skaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ffaa"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
     </linearGradient>
-
-    <!-- Bevel Stroke Gradient -->
-    <linearGradient id="skaStrokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="50%" stop-color="#00ffaa"/>
-      <stop offset="100%" stop-color="#0284c7"/>
-    </linearGradient>
-
-    <!-- Neon Glow Filter -->
-    <filter id="skaGlow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="3.5" result="blur" />
+    <!-- Soft Neon Ambient Glow Filter -->
+    <filter id="skaGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
       <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Glowing Aura Backing -->
-  <g filter="url(#skaGlow)" opacity="0.6">
-    <!-- S -->
-    <path d="M 40 12 C 40 6, 12 6, 12 18 C 12 30, 42 22, 42 38 C 42 50, 10 50, 10 40" stroke="#00ffaa" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- K -->
-    <path d="M 54 8 L 54 46 M 78 10 L 55 28 L 80 46" stroke="#00ffaa" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- A -->
-    <path d="M 94 46 L 110 8 L 126 46 M 100 34 L 120 34" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Geometric Hex Shield Icon Badge -->
+  <g transform="translate(6, 6)">
+    <!-- Outer Cyber Hexagon -->
+    <polygon points="24,4 42,14 42,34 24,44 6,34 6,14" 
+             stroke="url(#skaGrad)" 
+             stroke-width="2.2" 
+             fill="rgba(8, 14, 26, 0.75)" 
+             filter="url(#skaGlow)" />
+    
+    <!-- Inner Cyber Diamond / Core Node -->
+    <polygon points="24,14 33,24 24,34 15,24" 
+             fill="url(#skaGrad)" 
+             opacity="0.85" />
+    
+    <!-- Core Spark Dot -->
+    <circle cx="24" cy="24" r="2.5" fill="#ffffff" />
   </g>
 
-  <!-- Sharp Beveled Glass Foreground -->
-  <g>
-    <!-- S Glyph -->
-    <path d="M 40 12 C 40 6, 12 6, 12 18 C 12 30, 42 22, 42 38 C 42 50, 10 50, 10 40" stroke="url(#skaStrokeGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- Inner Highlight -->
-    <path d="M 37 13 C 37 9, 15 9, 15 18 C 15 27, 39 22, 39 37 C 39 46, 14 46, 14 40" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
-
-    <!-- K Glyph -->
-    <path d="M 54 8 L 54 46 M 78 10 L 55 28 L 80 46" stroke="url(#skaStrokeGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- Inner Highlight -->
-    <path d="M 56 10 L 56 44 M 75 12 L 58 27 L 77 44" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
-
-    <!-- A Glyph (Stylized Cyber Delta) -->
-    <path d="M 94 46 L 110 8 L 126 46 M 100 34 L 120 34" stroke="url(#skaStrokeGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <!-- Inner Highlight -->
-    <path d="M 96 44 L 110 11 L 124 44 M 102 33 L 118 33" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
+  <!-- Typography: Stylized SKA Monogram -->
+  <g transform="translate(64, 40)">
+    <!-- Monogram Letters with Luxury Tracking -->
+    <text font-family="'Syne', 'Space Grotesk', -apple-system, sans-serif" 
+          font-size="27" 
+          font-weight="800" 
+          letter-spacing="4px" 
+          fill="#ffffff">
+      SKA<tspan fill="url(#skaGrad)" font-size="30">.</tspan>
+    </text>
+    
+    <!-- Subtitle Tech Pill: FULL STACK // AI -->
+    <text x="2" y="12" 
+          font-family="'JetBrains Mono', monospace" 
+          font-size="7.5" 
+          font-weight="600" 
+          letter-spacing="2.5px" 
+          fill="#94a3b8">
+      FULL STACK &bull; AI
+    </text>
   </g>
-
-  <!-- Glowing Terminal Accent Dot -->
-  <circle cx="140" cy="42" r="3.5" fill="#00ffaa" filter="url(#skaGlow)"/>
 </svg>
