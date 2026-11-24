@@ -108,7 +108,7 @@
   };
 
   /**
-   * Draw Cover-Scale Frame onto Canvas
+   * Draw Cover-Scale Frame onto Canvas (Optimized for Mobile Portrait & Desktop)
    */
   const render = () => {
     if (!canvas || !context) return;
@@ -127,7 +127,11 @@
     const ratio = Math.max(hRatio, vRatio);
 
     const shiftX = (cw - iw * ratio) / 2;
-    const shiftY = (ch - ih * ratio) / 2;
+    // On mobile portrait, push character slightly down so hair and face aren't obscured by the large title
+    const isMobilePortrait = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    const shiftY = isMobilePortrait 
+      ? (ch - ih * ratio) / 2 + (ch * 0.08) 
+      : (ch - ih * ratio) / 2;
 
     context.fillStyle = '#06070a';
     context.fillRect(0, 0, cw, ch);
