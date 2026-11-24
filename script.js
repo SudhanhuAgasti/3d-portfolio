@@ -37,48 +37,31 @@
   };
 
   /**
-   * 2. Smooth Scrolling Architecture (Locomotive Scroll + ScrollTrigger Proxy)
+   * 2. Smooth Scrolling Architecture (Modern Studio Freight Lenis)
    */
-  let locoScroll = null;
+  let lenis = null;
 
   const initScrollEngine = () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const scrollerEl = document.querySelector(CONFIG.scrollerId);
-    if (!scrollerEl) return;
-
-    // Initialize Locomotive with responsive smooth options
-    locoScroll = new LocomotiveScroll({
-      el: scrollerEl,
-      smooth: true,
-      smartphone: { smooth: true },
-      tablet: { smooth: true },
-      multiplier: 0.95,
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
     });
 
-    locoScroll.on('scroll', ScrollTrigger.update);
+    // Connect Lenis to GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
 
-    // ScrollTrigger Proxy Integration for Locomotive Scroll
-    ScrollTrigger.scrollerProxy(CONFIG.scrollerId, {
-      scrollTop(value) {
-        if (arguments.length) {
-          locoScroll.scrollTo(value, { duration: 0, disableLerp: true });
-        }
-        return locoScroll.scroll.instance.scroll.y;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-      pinType: scrollerEl.style.transform ? 'transform' : 'fixed',
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
     });
 
-    // Sync on refresh
-    ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
+    gsap.ticker.lagSmoothing(0);
   };
 
   /**
@@ -183,7 +166,6 @@
         trigger: '#hero',
         start: 'top top',
         end: 'bottom top',
-        scroller: CONFIG.scrollerId,
         scrub: true,
       },
     });
@@ -194,10 +176,9 @@
       snap: 'frame',
       ease: 'none',
       scrollTrigger: {
-        trigger: CONFIG.scrollerId,
+        trigger: document.body,
         start: 'top top',
         end: 'bottom bottom',
-        scroller: CONFIG.scrollerId,
         scrub: 0.15,
       },
       onUpdate: render,
@@ -278,16 +259,12 @@
       const targetEl = document.querySelector(targetId);
       if (!targetEl) return;
 
-      if (locoScroll && typeof locoScroll.scrollTo === 'function') {
-        try {
-          locoScroll.scrollTo(targetEl, offset);
-          return;
-        } catch (err) {
-          console.warn('Locomotive scrollTo fallback:', err);
-        }
+      if (lenis) {
+        lenis.scrollTo(targetEl, { offset: offset, duration: 1.2 });
+        return;
       }
 
-      // Fallback native smooth scroll if Locomotive instance is suspended or on mobile
+      // Fallback
       targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
@@ -328,7 +305,6 @@
         ease: 'power3.out',
         scrollTrigger: {
           trigger: header,
-          scroller: CONFIG.scrollerId,
           start: 'top 88%',
           toggleActions: 'play none none reverse',
         },
@@ -354,7 +330,6 @@
           ease: 'power3.out',
           scrollTrigger: {
             trigger: card,
-            scroller: CONFIG.scrollerId,
             start: 'top 85%',
             toggleActions: 'play none none reverse',
           },
@@ -396,7 +371,6 @@
           ease: 'power3.out',
           scrollTrigger: {
             trigger: container,
-            scroller: CONFIG.scrollerId,
             start: 'top 82%',
             toggleActions: 'play none none reverse',
           },
@@ -422,9 +396,6 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         resizeCanvas();
-        if (locoScroll) {
-          locoScroll.update();
-        }
         ScrollTrigger.refresh();
       }, 150);
     }, { passive: true });
