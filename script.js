@@ -401,9 +401,16 @@
     initNavigation();
     initScrollReveals();
 
+    let resizeTimer = null;
     window.addEventListener('resize', () => {
-      resizeCanvas();
-      if (locoScroll) locoScroll.update();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resizeCanvas();
+        if (locoScroll) {
+          locoScroll.update();
+        }
+        ScrollTrigger.refresh();
+      }, 150);
     }, { passive: true });
 
     // Fallback safety: If preloader hangs for any reason, auto dismiss after 5s
