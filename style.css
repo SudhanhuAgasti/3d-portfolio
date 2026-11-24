@@ -263,50 +263,32 @@ body {
 .brand-link {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 6px 0;
     text-decoration: none;
     transition: transform var(--transition-fast), filter var(--transition-fast);
 }
 
-.brand-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-}
-
 .brand-logo-img {
-    height: 48px;
+    height: 52px;
     width: auto;
+    max-height: calc(var(--header-height) - 16px);
     object-fit: contain;
-    filter: drop-shadow(0 0 12px rgba(0, 255, 170, 0.45));
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
-}
-
-.brand-name-text {
-    font-family: var(--font-heading);
-    font-size: 1.15rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: #ffffff;
-    display: inline-block;
-}
-
-.brand-dot {
-    color: var(--accent);
+    filter: drop-shadow(0 0 10px rgba(0, 255, 170, 0.55)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+    display: block;
 }
 
 .brand-link:hover .brand-logo-img {
-    transform: translateY(-2px) scale(1.06);
-    filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.85)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.5));
+    transform: translateY(-2px) scale(1.08);
+    filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.95)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.6));
 }
 
 @media (max-width: 768px) {
     .brand-logo-img {
-        height: 38px;
-    }
-    .brand-name-text {
-        font-size: 0.95rem;
-        letter-spacing: 1px;
+        height: 44px;
+        max-height: calc(var(--header-height) - 12px);
     }
 }
 
