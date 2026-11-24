@@ -58,12 +58,13 @@
 
     locoScroll.on('scroll', ScrollTrigger.update);
 
-    // ScrollTrigger Proxy Integration
+    // ScrollTrigger Proxy Integration for Locomotive Scroll
     ScrollTrigger.scrollerProxy(CONFIG.scrollerId, {
       scrollTop(value) {
-        return arguments.length
-          ? locoScroll.scrollTo(value, 0, 0)
-          : locoScroll.scroll.instance.scroll.y;
+        if (arguments.length) {
+          locoScroll.scrollTo(value, { duration: 0, disableLerp: true });
+        }
+        return locoScroll.scroll.instance.scroll.y;
       },
       getBoundingClientRect() {
         return {
@@ -279,7 +280,7 @@
 
       if (locoScroll && typeof locoScroll.scrollTo === 'function') {
         try {
-          locoScroll.scrollTo(targetEl, { offset: offset, duration: 800 });
+          locoScroll.scrollTo(targetEl, offset);
           return;
         } catch (err) {
           console.warn('Locomotive scrollTo fallback:', err);
