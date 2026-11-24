@@ -542,6 +542,64 @@ body {
 }
 
 /* ==========================================================================
+   HERO RUNNING CONTINUOUS SKILL MARQUEE RIBBON
+   ========================================================================== */
+.hero-skills-marquee {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow: hidden;
+    padding: 14px 0;
+    background: rgba(8, 12, 22, 0.55);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 24px;
+    pointer-events: auto;
+}
+
+.marquee-track {
+    display: flex;
+    gap: 36px;
+    width: max-content;
+    animation: marqueeScroll 22s linear infinite;
+}
+
+.hero-skills-marquee:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.marquee-item i {
+    width: 16px;
+    height: 16px;
+    color: var(--accent);
+}
+
+.marquee-item:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ==========================================================================
    STACKING CARDS & SCROLL DECK ARCHITECTURE
    ========================================================================== */
 .section-block {
@@ -550,6 +608,37 @@ body {
     z-index: 20;
     background: transparent;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Sticky Stacking Deck Effect: cards sit on top of each other and peel off */
+.projects-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+}
+
+.projects-showcase .project-card {
+    position: sticky;
+    top: calc(var(--header-height) + 30px);
+    margin-bottom: 30px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5), 0 20px 40px rgba(0, 0, 0, 0.6);
+    background: linear-gradient(135deg, rgba(16, 24, 42, 0.72) 0%, rgba(10, 14, 26, 0.82) 100%);
+}
+
+.projects-showcase .project-card:nth-child(1) {
+    top: calc(var(--header-height) + 20px);
+    z-index: 21;
+}
+
+.projects-showcase .project-card:nth-child(2) {
+    top: calc(var(--header-height) + 50px);
+    z-index: 22;
+}
+
+.projects-showcase .project-card:nth-child(3) {
+    top: calc(var(--header-height) + 80px);
+    z-index: 23;
 }
 
 /* Stacking card containers */

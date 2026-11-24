@@ -311,16 +311,41 @@
     });
 
     // 2. Sequential Stacking Containers (Projects, Skills, About, Experience)
-    const cardContainers = [
+    // Projects Stack: As each card scrolls up, the one below reveals and stacks over it
+    const projectCards = document.querySelectorAll('.projects-showcase .project-card');
+    projectCards.forEach((card, i) => {
+      gsap.fromTo(
+        card,
+        {
+          opacity: 0.8,
+          scale: 0.92 + (i * 0.03),
+          y: 60,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            scroller: CONFIG.scrollerId,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    });
+
+    const otherContainers = [
       '.about-grid',
       '.timeline-wrapper',
       '.skills-grid',
-      '.projects-showcase',
       '.edu-grid',
       '.contact-cta'
     ];
 
-    cardContainers.forEach((containerSelector) => {
+    otherContainers.forEach((containerSelector) => {
       const container = document.querySelector(containerSelector);
       if (!container) return;
 
