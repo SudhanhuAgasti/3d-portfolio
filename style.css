@@ -597,6 +597,19 @@ body {
     background: #141b29;
 }
 
+.brand-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.inv-white {
+    filter: brightness(0) invert(1);
+}
+
 .brand-svg {
     width: 18px;
     height: 18px;
