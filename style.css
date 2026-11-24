@@ -542,26 +542,26 @@ body {
 }
 
 /* ==========================================================================
-   HERO RUNNING CONTINUOUS SKILL MARQUEE RIBBON
+   HERO RUNNING CONTINUOUS SKILL MARQUEE RIBBON (PILL BADGES)
    ========================================================================== */
 .hero-skills-marquee {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     overflow: hidden;
-    padding: 14px 0;
-    background: rgba(8, 12, 22, 0.55);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 16px 0;
+    background: rgba(4, 6, 12, 0.65);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     margin-top: 24px;
     pointer-events: auto;
 }
 
 .marquee-track {
     display: flex;
-    gap: 36px;
+    gap: 16px;
     width: max-content;
-    animation: marqueeScroll 22s linear infinite;
+    animation: marqueeScroll 28s linear infinite;
 }
 
 .hero-skills-marquee:hover .marquee-track {
@@ -573,30 +573,62 @@ body {
     100% { transform: translateX(-50%); }
 }
 
+/* Individual Pill Badge styling matching the user's reference image */
 .marquee-item {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
     font-weight: 500;
-    color: var(--text-primary);
+    color: #f1f5f9;
     white-space: nowrap;
-    padding: 6px 14px;
+    padding: 8px 18px;
     border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.marquee-item i {
-    width: 16px;
-    height: 16px;
-    color: var(--accent);
+    background: #0d111a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .marquee-item:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.25);
+    background: #141b29;
+}
+
+.brand-svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Monograms & Square Icon Badges (like Express ex, TypeScript TS) */
+.brand-monogram {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: -0.05em;
+}
+
+.brand-badge-square {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.ts-bg {
+    background: #3178c6;
+    color: #ffffff;
 }
 
 /* ==========================================================================
