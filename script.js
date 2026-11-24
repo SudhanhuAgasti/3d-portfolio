@@ -92,7 +92,7 @@
   };
 
   /**
-   * Draw Cover-Scale Frame onto Canvas (Optimized for Mobile Portrait & Desktop)
+   * Draw Scaled Frame onto Canvas without Aggressive Zoom/Cropping
    */
   const render = () => {
     if (!canvas || !context) return;
@@ -108,10 +108,14 @@
 
     const hRatio = cw / iw;
     const vRatio = ch / ih;
-    const ratio = Math.max(hRatio, vRatio);
+    
+    // On desktop, clamp the scale so 1920x1080 3D character isn't blown up/zoomed excessively
+    const isDesktop = window.innerWidth > 768;
+    const ratio = isDesktop 
+      ? Math.max(hRatio, vRatio * 0.95) 
+      : Math.max(hRatio, vRatio);
 
     const shiftX = (cw - iw * ratio) / 2;
-    // On mobile portrait, push character slightly down so hair and face aren't obscured by the large title
     const isMobilePortrait = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     const shiftY = isMobilePortrait 
       ? (ch - ih * ratio) / 2 + (ch * 0.08) 
