@@ -169,6 +169,20 @@
       images.push(img);
     }
 
+    // Smooth Parallax Fade-Out for Hero Text as user scrolls down
+    gsap.to('.hero-content-layer', {
+      y: -120,
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scroller: CONFIG.scrollerId,
+        scrub: true,
+      },
+    });
+
     // Scroll scrubbing animation across the entire document scroll
     gsap.to(imageSeq, {
       frame: CONFIG.frameCount - 1,

@@ -541,6 +541,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    will-change: transform, opacity;
 }
 
 .hero-top {
