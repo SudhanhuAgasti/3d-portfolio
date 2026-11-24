@@ -265,30 +265,31 @@ body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 6px 0;
+    padding: 4px 0;
     text-decoration: none;
     transition: transform var(--transition-fast), filter var(--transition-fast);
 }
 
 .brand-logo-img {
-    height: 52px;
+    height: calc(var(--header-height) - 14px);
     width: auto;
-    max-height: calc(var(--header-height) - 16px);
+    max-width: 160px;
     object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(0, 255, 170, 0.55)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+    border-radius: 8px;
+    filter: drop-shadow(0 0 14px rgba(0, 255, 170, 0.45));
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
     display: block;
 }
 
 .brand-link:hover .brand-logo-img {
-    transform: translateY(-2px) scale(1.08);
-    filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.95)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.6));
+    transform: translateY(-2px) scale(1.05);
+    filter: drop-shadow(0 0 24px rgba(0, 255, 170, 0.85)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.5));
 }
 
 @media (max-width: 768px) {
     .brand-logo-img {
-        height: 44px;
-        max-height: calc(var(--header-height) - 12px);
+        height: calc(var(--header-height) - 12px);
+        max-width: 125px;
     }
 }
 
