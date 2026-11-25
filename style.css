@@ -271,25 +271,25 @@ body {
 }
 
 .brand-logo-img {
-    height: calc(var(--header-height) - 14px);
-    max-height: 58px;
+    height: 40px;
+    max-height: calc(var(--header-height) - 24px);
     width: auto;
     aspect-ratio: 2 / 1;
     object-fit: contain;
-    filter: drop-shadow(0 0 16px rgba(0, 255, 170, 0.45));
+    filter: drop-shadow(0 0 12px rgba(0, 255, 170, 0.45));
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
     display: block;
 }
 
 .brand-link:hover .brand-logo-img {
     transform: translateY(-1px) scale(1.05);
-    filter: drop-shadow(0 0 24px rgba(0, 255, 170, 0.85)) drop-shadow(0 0 40px rgba(56, 189, 248, 0.5));
+    filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.85)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.5));
 }
 
 @media (max-width: 768px) {
     .brand-logo-img {
-        height: calc(var(--header-height) - 12px);
-        max-height: 48px;
+        height: 32px;
+        max-height: calc(var(--header-height) - 18px);
     }
 }
 
@@ -1241,8 +1241,8 @@ body {
 }
 
 .tag-cloud li {
-    font-size: 0.84rem;
-    padding: 6px 12px;
+    font-size: 0.82rem;
+    padding: 5px 10px;
     background: rgba(18, 26, 44, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-sm);
@@ -1252,20 +1252,20 @@ body {
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .skill-pill-icon {
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
     object-fit: contain;
     flex-shrink: 0;
     display: inline-block;
 }
 
 .skill-pill-lucide {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     color: var(--accent);
     flex-shrink: 0;
 }
