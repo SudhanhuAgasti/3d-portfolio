@@ -1250,13 +1250,41 @@ body {
     backdrop-filter: blur(8px);
     transition: all 0.2s ease;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.skill-pill-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.skill-pill-lucide {
+    width: 14px;
+    height: 14px;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.skill-pill-icon.inv-white {
+    filter: brightness(0) invert(1);
 }
 
 .tag-cloud li:hover {
     border-color: var(--accent);
     color: var(--accent);
     transform: translateY(-2px);
-    background: rgba(0, 255, 170, 0.05);
+    background: rgba(0, 255, 170, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 255, 170, 0.15);
+}
+
+.tag-cloud li:hover .skill-pill-icon {
+    transform: scale(1.12);
+    transition: transform 0.2s ease;
 }
 
 /* ==========================================================================
